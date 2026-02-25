@@ -46,7 +46,7 @@ async function predict() {
         resProb.innerText = `분석 정확도: ${Math.floor(topResult.probability * 100)}%`;
 
         if (topResult.className === "Class 1") {
-            resStatus.innerText = "✅ 건강한 체형";
+            resStatus.innerText = "✅ 짱구네 건강한 아이";
             resStatus.style.color = "#4CAF50";
             resAdvice.innerText = "지금처럼 꾸준한 산책과 건강한 식단을 유지해주세요!";
         } else {
@@ -56,5 +56,6 @@ async function predict() {
         }
     }, 1500);
 }
+
 
 init();
