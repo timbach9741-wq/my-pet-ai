@@ -1,12 +1,46 @@
-<div id="result-area">
-    <div id="res-status" class="result-title">진단 결과</div>
-    
-    <div style="background:#eee; border-radius:10px; height:10px; width:100%; margin: 10px 0;">
-        <div id="res-bar" style="background:#ff9900; height:100%; width:0%; border-radius:10px; transition: 1s;"></div>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>반려동물 AI 건강 체크</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <style>
+        body { font-family: 'Apple SD Gothic Neo', sans-serif; text-align: center; background-color: #f8f9fa; padding: 20px; color: #333; }
+        .card { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); max-width: 420px; margin: auto; }
+        h2 { color: #ff9900; margin-bottom: 10px; }
+        #image-preview { width: 100%; border-radius: 15px; display: none; margin: 20px 0; border: 3px solid #eee; }
+        .btn { display: block; background-color: #ff9900; color: white; padding: 15px; border-radius: 12px; cursor: pointer; border: none; font-size: 17px; font-weight: bold; margin: 10px 0; width: 100%; transition: 0.3s; }
+        .btn:hover { background-color: #e68a00; }
+        #result-area { display: none; margin-top: 25px; padding: 20px; border-radius: 18px; background: #fffaf0; border: 2px solid #ff9900; animation: fadeIn 0.5s; }
+        .result-title { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
+        .result-desc { font-size: 15px; line-height: 1.5; color: #555; margin-bottom: 15px; }
+        #buy-btn { display: none; background-color: #000; color: #fff; text-decoration: none; padding: 15px; border-radius: 12px; font-weight: bold; margin-top: 10px; display:block;}
+        #loading { display: none; color: #ff9900; margin: 15px 0; font-weight: bold; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* 게이지 스타일 */
+        .gauge-bar { background:#eee; border-radius:10px; height:10px; width:100%; margin: 10px 0; overflow: hidden; }
+        #res-bar { background:#ff9900; height:100%; width:0%; border-radius:10px; transition: 1s; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>🐾 AI 건강 진단소</h2>
+        <input type="file" id="upload-input" accept="image/*" style="display:none;" onchange="previewImage(event)">
+        <button class="btn" onclick="document.getElementById('upload-input').click()">사진 선택하기</button>
+        <img id="image-preview" src="" alt="미리보기">
+        <button class="btn" style="background-color: #333;" onclick="predict()">분석 시작하기</button>
+        <div id="loading">AI가 열심히 분석하고 있어요... 🐾</div>
+        <div id="result-area">
+            <div id="res-status" class="result-title">진단 결과</div>
+            <div class="gauge-bar"><div id="res-bar"></div></div>
+            <p id="res-prob" style="font-size:12px; color:#999; margin-bottom:15px;">분석 정확도: 0%</p>
+            <p id="res-advice" class="result-desc"></p>
+            <a id="buy-btn" href="#" target="_blank">🛒 우리 아이 맞춤 상품 보러가기</a>
+            <button class="btn" style="background-color: #eee; color: #333; margin-top: 10px;" onclick="location.reload()">다시 테스트하기</button>
+        </div>
     </div>
-    <p id="res-prob" style="font-size:12px; color:#999; margin-bottom:15px;">분석 정확도: 0%</p>
-    
-    <p id="res-advice" class="result-desc"></p>
-    <a id="buy-btn" href="#" target="_blank">🛒 우리 아이 맞춤 상품 보러가기</a>
-    <button class="btn" style="background-color: #eee; color: #333; margin-top: 5px;" onclick="location.reload()">다시 테스트하기</button>
-</div>
+    <script src="main.js"></script>
+</body>
+</html>
