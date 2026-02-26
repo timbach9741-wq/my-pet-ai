@@ -23,7 +23,10 @@ async function predict() {
 
     document.getElementById('loading').style.display = "block";
     document.getElementById('result-area').style.display = "none";
-    
+
+    // Wait a moment to ensure UI updates
+    await new Promise(resolve => setTimeout(resolve, 100));
+
     const prediction = await model.predict(img);
     let topResult = { className: "", probability: 0 };
 
@@ -33,33 +36,41 @@ async function predict() {
         }
     }
 
-    setTimeout(() => {
-        document.getElementById('loading').style.display = "none";
-        const resArea = document.getElementById('result-area');
-        const resStatus = document.getElementById('res-status');
-        const resAdvice = document.getElementById('res-advice');
-        const resBar = document.getElementById('res-bar');
-        const resProb = document.getElementById('res-prob');
-        const buyBtn = document.getElementById('buy-btn');
+    document.getElementById('loading').style.display = "none";
+    const resArea = document.getElementById('result-area');
+    const resStatus = document.getElementById('res-status');
+    const resAdvice = document.getElementById('res-advice');
+    const resBar = document.getElementById('res-bar');
+    const resProb = document.getElementById('res-prob');
+    const buyBtn = document.getElementById('buy-btn');
 
-        resArea.style.display = "block";
-        
-        const probPercent = Math.floor(topResult.probability * 100);
-        resBar.style.width = probPercent + "%";
-        resProb.innerText = `AI 분석 확신도: ${probPercent}%`;
+    resArea.style.display = "block";
 
-        if (topResult.className === "Class 1") {
-            resStatus.innerText = "✅ 아주 건강해요!";
-            resStatus.style.color = "#4CAF50";
-            resAdvice.innerText = "현재 이상적인 체형입니다. 꾸준한 활동량과 균형 잡힌 식단이 비결이네요!";
-            buyBtn.href = "https://www.coupang.com/np/search?q=강아지+영양제";
-        } else {
-            resStatus.innerText = "⚠️ 관리가 필요해요";
-            resStatus.style.color = "#F44336";
-            resAdvice.innerText = "조금 통통한 상태인 것 같아요. 다이어트 사료와 산책 횟수를 늘려주는 건 어떨까요?";
-            buyBtn.href = "https://www.coupang.com/np/search?q=강아지+다이어트+사료";
-        }
-    }, 1500);
+    const probPercent = Math.floor(topResult.probability * 100);
+    resBar.style.width = probPercent + "%";
+    resProb.innerText = `AI 분석 확신도: ${probPercent}%`;
+
+    if (probPercent < 60) {
+        resStatus.innerText = "❓ 분석이 어려워요";
+        resStatus.style.color = "#9E9E9E";
+        resAdvice.innerText = "사진이 흔들렸거나 명확하지 않을 수 있어요. 더 선명한 사진으로 다시 시도해보세요.";
+        buyBtn.style.display = "none";
+        return;
+    }
+
+    buyBtn.style.display = "block";
+
+    if (topResult.className === "정상") {
+        resStatus.innerText = "✅ 아주 건강해요!";
+        resStatus.style.color = "#4CAF50";
+        resAdvice.innerText = "현재 이상적인 체형입니다. 꾸준한 활동량과 균형 잡힌 식단이 비결이네요!";
+        buyBtn.href = "https://www.coupang.com/np/search?q=강아지+영양제";
+    } else {
+        resStatus.innerText = "⚠️ 관리가 필요해요";
+        resStatus.style.color = "#F44336";
+        resAdvice.innerText = "조금 통통한 상태인 것 같아요. 다이어트 사료와 산책 횟수를 늘려주는 건 어떨까요?";
+        buyBtn.href = "https://www.coupang.com/np/search?q=강아지+다이어트+사료";
+    }
 }
 
 init();
