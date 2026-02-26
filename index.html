@@ -18,6 +18,16 @@
         .result-desc { font-size: 15px; line-height: 1.5; color: #555; margin-bottom: 15px; }
         #buy-btn { display: none; background-color: #000; color: #fff; text-decoration: none; padding: 15px; border-radius: 12px; font-weight: bold; margin-top: 10px; display:block;}
         #loading { display: none; color: #ff9900; margin: 15px 0; font-weight: bold; }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff9900;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         /* 게이지 스타일 */
         .gauge-bar { background:#eee; border-radius:10px; height:10px; width:100%; margin: 10px 0; overflow: hidden; }
@@ -31,7 +41,10 @@
         <button class="btn" onclick="document.getElementById('upload-input').click()">사진 선택하기</button>
         <img id="image-preview" src="" alt="미리보기">
         <button class="btn" style="background-color: #333;" onclick="predict()">분석 시작하기</button>
-        <div id="loading">AI가 열심히 분석하고 있어요... 🐾</div>
+        <div id="loading">
+            <div class="spinner"></div>
+            AI가 열심히 분석하고 있어요... 🐾
+        </div>
         <div id="result-area">
             <div id="res-status" class="result-title">진단 결과</div>
             <div class="gauge-bar"><div id="res-bar"></div></div>
